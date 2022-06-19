@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="diziBlogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullanici" Type="varchar" MaxLength="20" />
+    <Property Name="sifre" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="tbl_blog">
+    <Key>
+      <PropertyRef Name="blogId" />
+    </Key>
+    <Property Name="blogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="blogBaslik" Type="nvarchar" MaxLength="100" />
+    <Property Name="blogIcerik" Type="nvarchar" MaxLength="4000" />
+    <Property Name="blogTarih" Type="smalldatetime" />
+    <Property Name="blogGorsel" Type="varchar" MaxLength="100" />
+    <Property Name="blogTur" Type="tinyint" />
+    <Property Name="blogKategori" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="tbl_hakkimizda">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="aciklama" Type="varchar" MaxLength="4000" />
+  </EntityType>
+  <EntityType Name="tbl_iletisim">
+    <Key>
+      <PropertyRef Name="mesajId" />
+    </Key>
+    <Property Name="mesajId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="adSoyad" Type="nvarchar" MaxLength="50" />
+    <Property Name="mail" Type="varchar" MaxLength="50" />
+    <Property Name="telefon" Type="varchar" MaxLength="50" />
+    <Property Name="konu" Type="varchar" MaxLength="50" />
+    <Property Name="mesajIcerik" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="tbl_kategori">
+    <Key>
+      <PropertyRef Name="kategoriId" />
+    </Key>
+    <Property Name="kategoriId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kategoriAd" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbl_tur">
+    <Key>
+      <PropertyRef Name="turId" />
+    </Key>
+    <Property Name="turId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="turAdi" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tbl_yorum">
+    <Key>
+      <PropertyRef Name="yorumId" />
+    </Key>
+    <Property Name="yorumId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kullaniciAd" Type="nvarchar" MaxLength="50" />
+    <Property Name="mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="yorumIcerik" Type="nvarchar" MaxLength="400" />
+    <Property Name="yorumBlog" Type="int" />
+  </EntityType>
+  <Association Name="FK_tbl_blog_tbl_kategori">
+    <End Role="tbl_kategori" Type="Self.tbl_kategori" Multiplicity="0..1" />
+    <End Role="tbl_blog" Type="Self.tbl_blog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_kategori">
+        <PropertyRef Name="kategoriId" />
+      </Principal>
+      <Dependent Role="tbl_blog">
+        <PropertyRef Name="blogKategori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_blog_tbl_tur">
+    <End Role="tbl_tur" Type="Self.tbl_tur" Multiplicity="0..1" />
+    <End Role="tbl_blog" Type="Self.tbl_blog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_tur">
+        <PropertyRef Name="turId" />
+      </Principal>
+      <Dependent Role="tbl_blog">
+        <PropertyRef Name="blogTur" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_yorum_tbl_blog">
+    <End Role="tbl_blog" Type="Self.tbl_blog" Multiplicity="0..1" />
+    <End Role="tbl_yorum" Type="Self.tbl_yorum" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_blog">
+        <PropertyRef Name="blogId" />
+      </Principal>
+      <Dependent Role="tbl_yorum">
+        <PropertyRef Name="yorumBlog" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="diziBlogModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_admin" EntityType="Self.tbl_admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_blog" EntityType="Self.tbl_blog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_hakkimizda" EntityType="Self.tbl_hakkimizda" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_iletisim" EntityType="Self.tbl_iletisim" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_kategori" EntityType="Self.tbl_kategori" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_tur" EntityType="Self.tbl_tur" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_yorum" EntityType="Self.tbl_yorum" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tbl_blog_tbl_kategori" Association="Self.FK_tbl_blog_tbl_kategori">
+      <End Role="tbl_kategori" EntitySet="tbl_kategori" />
+      <End Role="tbl_blog" EntitySet="tbl_blog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_blog_tbl_tur" Association="Self.FK_tbl_blog_tbl_tur">
+      <End Role="tbl_tur" EntitySet="tbl_tur" />
+      <End Role="tbl_blog" EntitySet="tbl_blog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_yorum_tbl_blog" Association="Self.FK_tbl_yorum_tbl_blog">
+      <End Role="tbl_blog" EntitySet="tbl_blog" />
+      <End Role="tbl_yorum" EntitySet="tbl_yorum" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
